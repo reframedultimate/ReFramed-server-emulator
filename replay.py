@@ -3,10 +3,12 @@ import socket
 import time
 
 
-speed_multiplier = 2
 mapping_info_checksum = 1177268349
-
 filename = sys.argv[1]
+
+speed_multiplier = 2
+if len(sys.argv) > 2:
+    speed_multiplier = int(sys.argv[2])
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(("0.0.0.0", 42069))
@@ -33,8 +35,11 @@ with open(filename, "rb") as f:
 
             l = f.read(1)[0]
             blob = f.read(l)
+            if blob[0] == 14:
+                break
             client.send(blob)
         except Exception:
             break
 
-print("Done")
+input("Done")
+
